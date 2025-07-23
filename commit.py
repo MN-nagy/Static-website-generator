@@ -1,19 +1,8 @@
-import argparse
 import subprocess
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Fast pushing",
-        usage="python commit.py <commit message>"
-    )
-
-
-    parser.add_argument("commit", type=str, nargs="+", help="add commit message")
-
-
-    args = parser.parse_args()
-    commit_message = " ".join(args.commit)
+    commit_message = 'DSA Tests passed'
 
     try:
         result = subprocess.run(
