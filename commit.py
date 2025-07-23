@@ -1,9 +1,23 @@
+import os
 import subprocess
 
 
-def main():
-    commit_message = 'DSA Tests passed'
+def commit():
+    git_dir = '/home/Nagy/fortests/projects/DSA/.git' # Assuming this is your .git directory
+    lock_file = os.path.join(git_dir, 'index.lock')
 
+    # 1. Check for and remove the lock file
+    if os.path.exists(lock_file):
+        print(f"Found existing lock file: {lock_file}. Attempting to remove it.")
+        try:
+            os.remove(lock_file)
+            print("Lock file removed successfully.")
+        except OSError as e:
+            print(f"Error removing lock file: {e}")
+            print("Please remove the lock file manually and try again.")
+            return   
+
+    commit_message = 'DSA Tests passed'
     try:
         result = subprocess.run(
             f"git add . & git commit -m '{commit_message}'",
@@ -35,4 +49,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    commit()

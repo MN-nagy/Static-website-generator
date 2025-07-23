@@ -1,3 +1,4 @@
+from commit import commit
 from main import *
 
 run_cases = [
@@ -41,6 +42,7 @@ def main():
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
+        commit()
     else:
         print("============= FAIL ==============")
     if skipped > 0:
@@ -54,3 +56,4 @@ if "__RUN__" in globals():
     test_cases = run_cases
 
 main()
+
