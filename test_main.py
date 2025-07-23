@@ -1,27 +1,24 @@
 from commit import commit
 from main import *
 
-run_cases = [
-    ([7, 4, 3, 100, 2343243, 343434, 1, 2, 32], 1),
-    ([12, 12, 12], 12),
-    ([10, 200, 3000, 5000, 4], 4),
-]
+run_cases = [([7, 4, 3, 100, 2343243, 343434, 1, 2, 32], 2686826), ([12, 12, 12], 36)]
 
 submit_cases = run_cases + [
+    ([10, 200, 3000, 5000, 4], 8214),
+    ([], 0),
     ([1], 1),
-    ([1, 2, 3, 4, 5], 1),
-    ([5, 4, 3, 2, 1], 1),
-    ([100, 200, 300, 400, 500], 100),
-    ([500, 400, 300, 200, 100], 100),
-    ([], None),
+    ([123456789], 123456789),
+    ([-1, -2, -3], -6),
+    ([0, 0, 0, 0, 0], 0),
 ]
 
 
 def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
+    print(f"Inputs:")
+    print(f" * nums: {input1}")
     print(f"Expecting: {expected_output}")
-    result = find_minimum(input1)
+    result = sum(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")

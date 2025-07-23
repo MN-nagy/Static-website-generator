@@ -1,8 +1,4 @@
-def find_minimum(nums):
+def sum(nums):
     if not nums:
-        return None
-    min_n = float("inf")
-    for num in nums:
-        if num < min_n:
-            min_n = num
-    return min_n
+        return 0
+    return nums[0] + sum(nums[1:])
