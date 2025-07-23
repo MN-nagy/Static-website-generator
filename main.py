@@ -1,4 +1,2 @@
 def sum(nums):
-    if not nums:
-        return 0
-    return nums[0] + sum(nums[1:])
+    return 0 if not nums else nums[0] + sum(nums[1:])
