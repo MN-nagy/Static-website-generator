@@ -1,40 +1,35 @@
-from commit import commit
 from main import *
 
 run_cases = [
-    ([1], 1),
-    ([1, 2, 3, 4, 5, 6, 7], 4),
-    ([12, 12, 12], 12),
-    ([], None),
+    (10, "fitness", 1, 40),
+    (10, "fitness", 2, 160),
+    (12, "cosmetic", 4, 972),
 ]
 
 submit_cases = run_cases + [
-    ([0], 0),
-    ([100, 200, 300, 400, 500], 300),
-    ([5, 10, 200, 3000, 5000], 1643),
-    ([12_345, 618_222, 58_832_221, 2_180_831_475, 8_663_863_102], 2_180_831_473),
+    (15, "business", 4, 240),
+    (10, "fitness", 5, 10240),
+    (10, "fitness", 6, 40960),
+    (10, "fitness", 7, 163840),
+    (10, "fitness", 8, 655360),
+    (10, "tech", 9, 5120),
 ]
 
 
-def test(input1, expected_output):
-    try:
-        print("---------------------------------")
-        print(f"Inputs:")
-        print(f" * nums: {input1}")
-        print(f"Expecting: {expected_output}")
-        result = average_followers(input1)
-        if expected_output is not None:
-            result = int(result)
-        print(f"Actual: {result}")
-        if result == expected_output:
-            print("Pass")
-            return True
-        print("Fail")
-        return False
-    except Exception as e:
-        print("Fail")
-        print(e)
-        return False
+def test(input1, input2, input3, expected_output):
+    print("---------------------------------")
+    print(f"Inputs:")
+    print(f" * Follower count: {input1}")
+    print(f" * Influencer type: {input2}")
+    print(f" * Number of months: {input3}")
+    print(f"Expecting: {expected_output}")
+    result = get_follower_prediction(input1, input2, input3)
+    print(f"Actual: {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
@@ -49,7 +44,6 @@ def main():
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
-        commit()
     else:
         print("============= FAIL ==============")
     if skipped > 0:
