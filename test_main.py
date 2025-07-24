@@ -1,63 +1,75 @@
 from main import *
+import random
 from commit import commit
 
 run_cases = [
-    (100, 100, "bob0 gonzalez0", True),
-    (500, 500, "maria1 smith1", True),
+    (10, 1000, "luxa", 383.9),
+    (20, 2000, "luxa", 593.25),
+    (30, 3000, "luxa", 932.23),
 ]
 
 submit_cases = run_cases + [
-    (1000, 1000, "bob500 smith1", False),
-    (2000, 2000, "bob1999 wagner1998", False),
-    (3000, 3000, "sally2999 smith2998", True),
+    (40, 4000, "luxa", 1495.4),
+    (80, 8000, "luxa", 2608.95),
+    (160, 16000, "luxa", 5920.98),
 ]
 
 
-def test(num_fnames, num_lnames, check_name, expected_output):
-    print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * num first_names: {num_fnames}")
-    print(f" * num last_names: {num_lnames}")
-    print(f" * looking for name: {check_name}")
-    print(f"Expecting: {expected_output}")
-    fnames = get_first_names(num_fnames)
-    lnames = get_last_names(num_lnames)
-    result = does_name_exist(fnames, lnames, check_name)
-    print(f"Actual: {result}")
-    if result == expected_output:
-        print("Pass")
-        return True
-    print("Fail")
-    return False
+def test(num_handles, avg_aud_size, brand_name, expected_output):
+    try:
+        print("---------------------------------")
+        print(
+            f"Checking {num_handles} influencers with average audience sizes of {avg_aud_size}..."
+        )
+        print(f" * brand_name: {brand_name}")
+        print(f"Expecting: {expected_output}")
+        all_handles = get_all_handles(num_handles, avg_aud_size)
+        avg = round(get_avg_brand_followers(all_handles, brand_name), 2)
+        print(f"Actual: {avg}")
+        if avg == expected_output:
+            print("Pass")
+            return True
+        print("Fail")
+        return False
+    except Exception as e:
+        print("Fail")
+        print(e)
+        return False
 
 
-def get_first_names(num):
-    names = []
+def get_all_handles(num, audience_size):
+    all_handles = []
     for i in range(num):
-        m = i % 3
-        if m == 0:
-            names.append(f"bob{i}")
-        elif m == 1:
-            names.append(f"maria{i}")
-        elif m == 2:
-            names.append(f"sally{i}")
-    return names
+        m = random.randrange(
+            int(audience_size - audience_size * 1.2),
+            int(audience_size + audience_size * 1.2),
+        )
+        handles = get_user_handles(m)
+        all_handles.append(handles)
+    return all_handles
 
 
-def get_last_names(num):
-    names = []
-    for i in range(num):
-        m = i % 3
+def get_user_handles(num):
+    handles = []
+    for i in range(0, num):
+        m = random.randrange(0, 6)
         if m == 0:
-            names.append(f"gonzalez{i}")
+            handles.append(f"luxaraygirl{i}")
         elif m == 1:
-            names.append(f"smith{i}")
+            handles.append(f"theprimerog{i}")
         elif m == 2:
-            names.append(f"wagner{i}")
-    return names
+            handles.append(f"luxafanboi{i}")
+        elif m == 3:
+            handles.append(f"dashlord{i}")
+        elif m == 4:
+            handles.append(f"saintrex{i}")
+        elif m == 5:
+            handles.append(f"writergurl{i}")
+    return handles
 
 
 def main():
+    random.seed(1)
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)

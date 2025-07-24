@@ -1,9 +1,7 @@
-def does_name_exist(first_names, last_names, full_name):
-    for f_name in first_names:
-        for l_name in last_names:
-            if full_name.startswith(f_name):
-                if full_name.endswith(l_name):
-                    return True
-                continue
-            continue
-    return False
+def get_avg_brand_followers(all_handles: list, brand_name: str) -> int:
+    b_count = 0
+    for handle in all_handles:
+        for b_name in handle:
+            if brand_name in b_name:
+                b_count += 1
+    return b_count / len(all_handles)
