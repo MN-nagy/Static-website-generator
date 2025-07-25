@@ -2,23 +2,30 @@ from main import *
 import time
 from commit import commit
 
-run_cases = [([4, 3, 2, 1], [1, 2, 3, 4]), ([9, 5, -3, 7], [-3, 5, 7, 9])]
+run_cases = [
+    ([2, 1, 3], 0, 2, [1, 2, 3]),
+    ([9, 6, 2, 1, 8, 7], 0, 5, [1, 2, 6, 7, 8, 9]),
+]
 
 submit_cases = run_cases + [
-    ([], []),
-    ([1], [1]),
-    ([5, 3, 4, 1, 2], [1, 2, 3, 4, 5]),
-    ([0, -2, -5, 3, 2, 1], [-5, -2, 0, 1, 2, 3]),
-    ([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+    ([], 0, -1, []),
+    ([1], 0, 0, [1]),
+    ([1, 2, 3, 4, 5], 0, 4, [1, 2, 3, 4, 5]),
+    ([5, 4, 3, 2, 1], 0, 4, [1, 2, 3, 4, 5]),
+    ([0, 1, 6, 4, 7, 3, 2, 8, 5, -9], 0, 9, [-9, 0, 1, 2, 3, 4, 5, 6, 7, 8]),
 ]
 
 
-def test(input1, expected_output):
+def test(input1, input2, input3, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
+    print(f"Inputs:")
+    print(f" * nums: {input1}")
+    print(f" * low: {input2}")
+    print(f" * high: {input3}")
     print(f"Expecting: {expected_output}")
     start = time.time()
-    result = insertion_sort(input1)
+    result = input1.copy()
+    quick_sort(result, input2, input3)
     end = time.time()
     timeout = 1.00
     if (end - start) < timeout:
