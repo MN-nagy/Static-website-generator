@@ -1,47 +1,31 @@
-from main import *
-import time
 from commit import commit
+from main import *
 
 run_cases = [
-    ([2, 1, 3], 0, 2, [1, 2, 3]),
-    ([9, 6, 2, 1, 8, 7], 0, 5, [1, 2, 6, 7, 8, 9]),
+    ([5, 3, 8, 6, 1, 9], [1, 3, 5, 6, 8, 9]),
+    ([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
 ]
 
 submit_cases = run_cases + [
-    ([], 0, -1, []),
-    ([1], 0, 0, [1]),
-    ([1, 2, 3, 4, 5], 0, 4, [1, 2, 3, 4, 5]),
-    ([5, 4, 3, 2, 1], 0, 4, [1, 2, 3, 4, 5]),
-    ([0, 1, 6, 4, 7, 3, 2, 8, 5, -9], 0, 9, [-9, 0, 1, 2, 3, 4, 5, 6, 7, 8]),
+    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+    ([15, 12, 8, 7, 5, 3, 1], [1, 3, 5, 7, 8, 12, 15]),
+    ([10, 5, 3, 7, 2, 8, 1], [1, 2, 3, 5, 7, 8, 10]),
+    ([], []),
+    ([1], [1]),
 ]
 
 
-def test(input1, input2, input3, expected_output):
+def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * nums: {input1}")
-    print(f" * low: {input2}")
-    print(f" * high: {input3}")
+    print(f"Inputs: {input}")
     print(f"Expecting: {expected_output}")
-    start = time.time()
-    result = input1.copy()
-    quick_sort(result, input2, input3)
-    end = time.time()
-    timeout = 1.00
-    if (end - start) < timeout:
-        print(f"test completed in less than {timeout * 1000} milliseconds!")
-        if result == expected_output:
-            print(f"Actual: {result}")
-            print("Pass")
-            return True
-        print(f"Actual: {result}")
-        print("Fail")
-        return False
-    else:
-        print(f"test took longer than {timeout * 1000} milliseconds!")
-        print(f"Actual: {result}")
-        print("Fail")
-        return False
+    result = selection_sort(input)
+    print(f"Actual: {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
