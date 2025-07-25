@@ -1,7 +1,7 @@
-def get_avg_brand_followers(all_handles: list, brand_name: str) -> int:
-    b_count = 0
-    for handle in all_handles:
-        for b_name in handle:
-            if brand_name in b_name:
-                b_count += 1
-    return b_count / len(all_handles)
+def insertion_sort(nums):
+    for i in range(1, len(nums)):
+        j = i
+        while j > 0 and nums[j - 1] > nums[j]:
+            nums[j - 1], nums[j] = nums[j], nums[j - 1]
+            j -= 1
+    return nums

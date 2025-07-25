@@ -1,75 +1,43 @@
 from main import *
-import random
+import time
 from commit import commit
 
-run_cases = [
-    (10, 1000, "luxa", 383.9),
-    (20, 2000, "luxa", 593.25),
-    (30, 3000, "luxa", 932.23),
-]
+run_cases = [([4, 3, 2, 1], [1, 2, 3, 4]), ([9, 5, -3, 7], [-3, 5, 7, 9])]
 
 submit_cases = run_cases + [
-    (40, 4000, "luxa", 1495.4),
-    (80, 8000, "luxa", 2608.95),
-    (160, 16000, "luxa", 5920.98),
+    ([], []),
+    ([1], [1]),
+    ([5, 3, 4, 1, 2], [1, 2, 3, 4, 5]),
+    ([0, -2, -5, 3, 2, 1], [-5, -2, 0, 1, 2, 3]),
+    ([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
 ]
 
 
-def test(num_handles, avg_aud_size, brand_name, expected_output):
-    try:
-        print("---------------------------------")
-        print(
-            f"Checking {num_handles} influencers with average audience sizes of {avg_aud_size}..."
-        )
-        print(f" * brand_name: {brand_name}")
-        print(f"Expecting: {expected_output}")
-        all_handles = get_all_handles(num_handles, avg_aud_size)
-        avg = round(get_avg_brand_followers(all_handles, brand_name), 2)
-        print(f"Actual: {avg}")
-        if avg == expected_output:
+def test(input1, expected_output):
+    print("---------------------------------")
+    print(f"Inputs: {input1}")
+    print(f"Expecting: {expected_output}")
+    start = time.time()
+    result = insertion_sort(input1)
+    end = time.time()
+    timeout = 1.00
+    if (end - start) < timeout:
+        print(f"test completed in less than {timeout * 1000} milliseconds!")
+        if result == expected_output:
+            print(f"Actual: {result}")
             print("Pass")
             return True
+        print(f"Actual: {result}")
         print("Fail")
         return False
-    except Exception as e:
+    else:
+        print(f"test took longer than {timeout * 1000} milliseconds!")
+        print(f"Actual: {result}")
         print("Fail")
-        print(e)
         return False
-
-
-def get_all_handles(num, audience_size):
-    all_handles = []
-    for i in range(num):
-        m = random.randrange(
-            int(audience_size - audience_size * 1.2),
-            int(audience_size + audience_size * 1.2),
-        )
-        handles = get_user_handles(m)
-        all_handles.append(handles)
-    return all_handles
-
-
-def get_user_handles(num):
-    handles = []
-    for i in range(0, num):
-        m = random.randrange(0, 6)
-        if m == 0:
-            handles.append(f"luxaraygirl{i}")
-        elif m == 1:
-            handles.append(f"theprimerog{i}")
-        elif m == 2:
-            handles.append(f"luxafanboi{i}")
-        elif m == 3:
-            handles.append(f"dashlord{i}")
-        elif m == 4:
-            handles.append(f"saintrex{i}")
-        elif m == 5:
-            handles.append(f"writergurl{i}")
-    return handles
 
 
 def main():
-    random.seed(1)
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
