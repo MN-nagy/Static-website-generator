@@ -1,8 +1,15 @@
-def selection_sort(nums):
-    for i in range(0, len(nums)):
-        smallest_idx = i
-        for j in range(i + 1, len(nums)):
-            if nums[j] < nums[smallest_idx]:
-                smallest_idx = j
-        nums[i], nums[smallest_idx] = nums[smallest_idx], nums[i]
-    return nums
+def fib(n):
+    if n < 0:
+        raise ValueError("Input must be a positive number")
+    elif n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        grandparent = 0
+        parent = 1
+        current = 0
+        for _ in range(2, n + 1):
+            current = grandparent + parent
+            parent, grandparent = current, parent
+        return current
