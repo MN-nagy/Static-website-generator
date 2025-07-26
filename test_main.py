@@ -1,6 +1,5 @@
 from main import *
 import random
-
 from commit import commit
 
 
@@ -60,11 +59,11 @@ def get_users(num):
 run_cases = [
     (
         4,
-        [User(0), User(8), User(11), User(7)],
+        [User(0), User(7), User(8), User(11)],
     ),
     (
         6,
-        [User(0), User(9), User(5), User(17), User(16), User(10)],
+        [User(0), User(5), User(9), User(10), User(16), User(17)],
     ),
 ]
 
@@ -72,17 +71,17 @@ submit_cases = run_cases + [
     (
         12,
         [
-            User(11),
-            User(10),
-            User(18),
-            User(17),
-            User(19),
             User(2),
+            User(10),
+            User(11),
+            User(17),
+            User(18),
+            User(19),
+            User(22),
             User(23),
             User(27),
-            User(33),
             User(30),
-            User(22),
+            User(33),
             User(34),
         ],
     ),
@@ -103,7 +102,7 @@ def test(num_characters, expected):
     print("-------------------------------------\n")
     print(f"Expecting: {expected}")
     try:
-        actual = bst.postorder([])
+        actual = bst.inorder([])
         print(f"Actual: {actual}")
         if expected == actual:
             print("Pass \n")
