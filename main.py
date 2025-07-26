@@ -11,17 +11,19 @@
 
 
 class BSTNode:
-    def inorder(self, visited):
-        if self.val is None:
-            return None
-        if self.left:
-            self.left.inorder(visited)
-        visited.append(self.val)
-        if self.right:
-            self.right.inorder(visited)
-        return visited
+    def exists(self, val):
+        if self.val == val:
+            return True
+        elif val < self.val:
+            if self.left:
+                return self.left.exists(val)
+            return False
+        else:
+            if self.right:
+                return self.right.exists(val)
+            return False
 
-    # don't touch below this line
+        # don't touch below this line
 
     def __init__(self, val=None):
         self.left = None
