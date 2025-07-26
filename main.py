@@ -1,15 +1,55 @@
-def fib(n):
-    if n < 0:
-        raise ValueError("Input must be a positive number")
-    elif n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        grandparent = 0
-        parent = 1
-        current = 0
-        for _ in range(2, n + 1):
-            current = grandparent + parent
-            parent, grandparent = current, parent
-        return current
+"""
+->> Binary Search Trees <BST>:
+1. each node has at most 2 children.
+
+2. the left child's value must be less than it's parent's value.
+
+3. the right child's value must grater than it's parent's value.
+
+4. no two nodes in the BST can have the same value.
+"""
+
+
+class BSTNode:
+    def get_min(self):
+        if self.val is None:
+            return None
+        current = self
+        while current.left is not None:
+            current = current.left
+        return current.val
+
+    def get_max(self):
+        if self.val is None:
+            return None
+        current = self
+        while current.right is not None:
+            current = current.right
+        return current.val
+
+    # don't touch below this line
+
+    def __init__(self, val=None):
+        self.left = None
+        self.right = None
+        self.val = val
+
+    def insert(self, val):
+        if not self.val:
+            self.val = val
+            return
+
+        if self.val == val:
+            return
+
+        if val < self.val:
+            if self.left:
+                self.left.insert(val)
+                return
+            self.left = BSTNode(val)
+            return
+
+        if self.right:
+            self.right.insert(val)
+            return
+        self.right = BSTNode(val)
