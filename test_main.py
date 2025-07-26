@@ -36,6 +36,12 @@ class User:
     def __lt__(self, other):
         return isinstance(other, User) and self.id < other.id
 
+    def __le__(self, other):
+        return isinstance(other, User) and self.id <= other.id
+
+    def __ge__(self, other):
+        return isinstance(other, User) and self.id >= other.id
+
     def __gt__(self, other):
         return isinstance(other, User) and self.id > other.id
 
@@ -57,40 +63,33 @@ def get_users(num):
     return users
 
 
-def populate_tree(nodes):
-    if not nodes:
-        return None
-    tree = BSTNode(nodes[0])
-    for node in nodes[1:]:
-        tree.insert(node)
-    return tree
-
-
 run_cases = [
-    (5, True),
-    (3, False),
+    (2, 2),
+    (6, 3),
 ]
 
 submit_cases = run_cases + [
-    (1, True),
-    (21, False),
-    (17, True),
-    (7, True),
+    (0, 0),
+    (1, 1),
+    (16, 7),
 ]
 
 
-def test(val_to_check, expected_output):
+def test(num_users, expected_output):
+    users = get_users(num_users)
+    if not users:
+        root = BSTNode()
+    else:
+        root = BSTNode(users[0])
+        for user in users[1:]:
+            root.insert(user)
+
     print("---------------------------------")
-    users = get_users(11)
-    tree = populate_tree(users)
-    user_to_find = User(val_to_check)
-    print(f"Tree nodes:")
-    for user in users:
-        print(f" * {user}")
-    print(f"Searching for: {user_to_find}")
-    print(f"Expecting: {expected_output}")
-    result = tree.exists(user_to_find)
-    print(f"Actual: {result}")
+    print(f"Users: {[str(user) for user in users]}")
+    print_tree(root)
+    print(f"Expecting height: {expected_output}")
+    result = root.height()
+    print(f"Actual height: {result}")
     if result == expected_output:
         print("Pass")
         return True
@@ -117,6 +116,19 @@ def main():
         print(f"{passed} passed, {failed} failed, {skipped} skipped")
     else:
         print(f"{passed} passed, {failed} failed")
+
+
+def print_tree(bst_node):
+    lines = []
+    format_tree_string(bst_node, lines)
+    print("\n".join(lines))
+
+
+def format_tree_string(bst_node, lines, level=0):
+    if bst_node is not None:
+        format_tree_string(bst_node.right, lines, level + 1)
+        lines.append(" " * 4 * level + "> " + str(bst_node.val))
+        format_tree_string(bst_node.left, lines, level + 1)
 
 
 test_cases = submit_cases
