@@ -1,7 +1,6 @@
-import random
 from main import *
+import random
 from commit import commit
-
 
 class User:
     def __init__(self, id):
@@ -55,33 +54,53 @@ def get_users(num):
         users.append(user)
     return users
 
-
 run_cases = [
-    (5, "Blake#0", "Carrell#14"),
-    (10, "Ricky#1", "Vennett#29"),
+    (
+        4,
+        [User(7), User(0), User(11), User(8)],
+    ),
+    (
+        6,
+        [User(10), User(5), User(0), User(9), User(16), User(17)],
+    ),
 ]
 
 submit_cases = run_cases + [
-    (15, "Shelley#2", "George#42"),
+    (
+        12,
+        [
+            User(34),
+            User(22),
+            User(2),
+            User(19),
+            User(17),
+            User(10),
+            User(11),
+            User(18),
+            User(30),
+            User(27),
+            User(23),
+            User(33),
+        ],
+    ),
 ]
 
 
-def test(num_users, min_user, max_user):
-    users = get_users(num_users)
+def test(num_characters, expected):
+    characters = get_users(num_characters)  # Adjust according to your project structure
     bst = BSTNode()
-    for user in users:
-        bst.insert(user)
+    for character in characters:
+        bst.insert(character)
     print("=====================================")
     print("Tree:")
     print("-------------------------------------")
-    print_tree(bst)
+    print(print_tree(bst))
     print("-------------------------------------\n")
-    print(f"Expected min: {min_user}, max: {max_user}")
+    print(f"Expecting: {expected}")
     try:
-        actual_min = bst.get_min()
-        actual_max = bst.get_max()
-        print(f"Actual min: {actual_min.user_name}, max: {actual_max.user_name}")
-        if actual_max.user_name == max_user and actual_min.user_name == min_user:
+        actual = bst.preorder([])
+        print(f"Actual: {actual}")
+        if expected == actual:
             print("Pass \n")
             return True
         print("Fail \n")

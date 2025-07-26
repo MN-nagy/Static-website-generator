@@ -11,21 +11,15 @@
 
 
 class BSTNode:
-    def get_min(self):
+    def preorder(self, visited):
         if self.val is None:
             return None
-        current = self
-        while current.left is not None:
-            current = current.left
-        return current.val
-
-    def get_max(self):
-        if self.val is None:
-            return None
-        current = self
-        while current.right is not None:
-            current = current.right
-        return current.val
+        visited.append(self.val)
+        if self.left:
+            self.left.preorder(visited)
+        if self.right:
+            self.right.preorder(visited)
+        return visited
 
     # don't touch below this line
 
