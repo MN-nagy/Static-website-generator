@@ -6,7 +6,8 @@ class HashMap:
 
     def resize(self):
         cl = self.current_load()
-        if len(self.hashmap) == 0:
+        lenn = len(self.hashmap)
+        if lenn == 0:
             self.hashmap.append(None)
             return
         elif cl < 0.05:
