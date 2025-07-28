@@ -1,4 +1,4 @@
-from main import BSTNode
+from main import *
 from commit import commit
 
 import random
@@ -36,12 +36,6 @@ class User:
     def __lt__(self, other):
         return isinstance(other, User) and self.id < other.id
 
-    def __le__(self, other):
-        return isinstance(other, User) and self.id <= other.id
-
-    def __ge__(self, other):
-        return isinstance(other, User) and self.id >= other.id
-
     def __gt__(self, other):
         return isinstance(other, User) and self.id > other.id
 
@@ -64,37 +58,41 @@ def get_users(num):
 
 
 run_cases = [
-    (2, 2),
-    (6, 3),
+    (
+        8,
+        get_users(2),
+        [3, 6],
+    ),
 ]
 
 submit_cases = run_cases + [
-    (0, 0),
-    (1, 1),
-    (16, 7),
+    (
+        512,
+        get_users(6),
+        [360, 487, 150, 458, 112, 50],
+    ),
 ]
 
 
-def test(num_users, expected_output):
-    users = get_users(num_users)
-    if not users:
-        root = BSTNode()
-    else:
-        root = BSTNode(users[0])
-        for user in users[1:]:
-            root.insert(user)
-
+def test(size, users, expected_indexes):
     print("---------------------------------")
-    print(f"Users: {[str(user) for user in users]}")
-    print_tree(root)
-    print(f"Expecting height: {expected_output}")
-    result = root.height()
-    print(f"Actual height: {result}")
-    if result == expected_output:
-        print("Pass")
-        return True
-    print("Fail")
-    return False
+    print(f" * HashMap size: {size}")
+    hm = HashMap(size)
+    try:
+        actual = []
+        for i, user in enumerate(users):
+            index = hm.key_to_index(user.user_name)
+            print(f"  Expect  {user.user_name} -> {expected_indexes[i]}")
+            print(f"  Actual  {user.user_name} -> {index}")
+            actual.append(index)
+        if actual == expected_indexes:
+            print("Pass \n")
+            return True
+        print("Fail \n")
+        return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 
 def main():
@@ -116,19 +114,6 @@ def main():
         print(f"{passed} passed, {failed} failed, {skipped} skipped")
     else:
         print(f"{passed} passed, {failed} failed")
-
-
-def print_tree(bst_node):
-    lines = []
-    format_tree_string(bst_node, lines)
-    print("\n".join(lines))
-
-
-def format_tree_string(bst_node, lines, level=0):
-    if bst_node is not None:
-        format_tree_string(bst_node.right, lines, level + 1)
-        lines.append(" " * 4 * level + "> " + str(bst_node.val))
-        format_tree_string(bst_node.left, lines, level + 1)
 
 
 test_cases = submit_cases
