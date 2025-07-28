@@ -1,129 +1,78 @@
-from main import HashMap
+from main import *
 from commit import commit
-
-import random
-
-
-class User:
-    def __init__(self, id, age, job_title):
-        self.id = id
-        user_names = [
-            "Blake",
-            "Ricky",
-            "Shelley",
-            "Dave",
-            "George",
-            "John",
-            "James",
-            "Mitch",
-            "Williamson",
-            "Burry",
-            "Vennett",
-            "Shipley",
-            "Geller",
-            "Rickert",
-            "Carrell",
-            "Baum",
-            "Brownfield",
-            "Lippmann",
-            "Moses",
-        ]
-        self.user_name = f"{user_names[id % len(user_names)]}#{id}"
-        self.age = age
-        self.job_title = job_title
-
-    def __eq__(self, other):
-        return isinstance(other, User) and self.id == other.id
-
-    def __lt__(self, other):
-        return isinstance(other, User) and self.id < other.id
-
-    def __gt__(self, other):
-        return isinstance(other, User) and self.id > other.id
-
-    def __repr__(self):
-        parts = self.user_name.split("#")
-        return f"(Name: {parts[0]}, ID: {self.id}, Age: {self.age}, Job Title: {self.job_title})"
-
-
-def get_users(num):
-    random.seed(1)
-    job_titles = ["Engineer", "Designer", "Manager", "Clerk", "Analyst"]
-    users = []
-    ids = list(range(num * 3))
-    random.shuffle(ids)
-    ids = ids[:num]
-    for id in ids:
-        age = random.randint(20, 60)
-        job_title = random.choice(job_titles)
-        user = User(id, age, job_title)
-        users.append(user)
-    return users
-
 
 run_cases = [
     (
-        512,
-        [User(1, 30, "Engineer"), User(2, 25, "Designer")],
         [
-            ("Ricky#1", User(1, 30, "Engineer")),
-            ("Shelley#2", User(2, 25, "Designer")),
-            ("FakeyFaker#2", None),
+            ("Billy Beane", 1),
+            ("Peter Brand", 2),
+            ("Art Howe", 3),
+            ("Scott Hatteberg", 4),
+            ("David Justice", 5),
+            ("Ron Washington", 6),
+            ("Paul DePodesta", 7),
         ],
-    ),
+        [
+            (1.0, 1),
+            (0.2, 10),
+            (0.03, 100),
+            (0.04, 100),
+            (0.05, 100),
+            (0.006, 1000),
+            (0.007, 1000),
+        ],
+    )
 ]
 
 submit_cases = run_cases + [
     (
-        1028,
-        [User(4, 36, "Clerk"), User(5, 29, "Chef"), User(6, 55, "Pilot")],
         [
-            ("George#4", User(4, 36, "Clerk")),
-            ("John#5", User(5, 29, "Chef")),
-            ("Blake#1", None),
+            ("Billy Beane", 1),
+            ("Peter Brand", 2),
+            ("Art Howe", 3),
+            ("Scott Hatteberg", 4),
+            ("David Justice", 5),
+            ("Ron Washington", 6),
+            ("Paul DePodesta", 7),
+            ("Chad Bradford", 8),
         ],
-    ),
+        [
+            (1.0, 1),
+            (0.2, 10),
+            (0.03, 100),
+            (0.04, 100),
+            (0.05, 100),
+            (0.006, 1000),
+            (0.007, 1000),
+            (0.008, 1000),
+        ],
+    )
 ]
 
 
-def test(size, users, expected_hashmap):
-    print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * HashMap size: {size}")
-    hm = HashMap(size)
-    for user in users:
-        hm.insert(user.user_name, user)
-        print(f"   * Inserted ({user.user_name}, {user})")
-
-    passes = True
-    for user_name, expected in expected_hashmap:
+def test(items, expected_outputs):
+    hm = HashMap(0)
+    print("=====================================")
+    actual = []
+    for i, item in enumerate(items):
+        key = item[0]
+        val = item[1]
+        expected_load = expected_outputs[i][0]
+        expected_size = expected_outputs[i][1]
+        print(f"insert({key}, {val})")
         try:
-            result = hm.get(user_name)
-            if result == expected:
-                print(f"Get {user_name}: Pass")
-            else:
-                print(f"Get {user_name}: Fail")
-                print(f"   * Expect: {expected}")
-                print(f"   * Actual: {result}")
-                passes = False
+            hm.insert(key, val)
+            print(f"Expect Load: {expected_load}")
+            print(f"Actual Load: {hm.current_load()}")
+            print(f"Expect Size: {expected_size}")
+            print(f"Actual Size: {len(hm.hashmap)}")
+            print("---------------------------------")
+            actual.append((hm.current_load(), len(hm.hashmap)))
         except Exception as e:
-            actualErr = str(e)
-            expectedErr = "sorry, key not found"
-
-            if expected is not None:
-                print(f"Get {user_name}: Fail")
-                print(f"   * Expect: {expected}")
-                print(f"   * Actual: exception: {actualErr}")
-                passes = False
-            elif actualErr == expectedErr:
-                print(f"Get {user_name}: Pass")
-            else:
-                print(f"Get {user_name}: Fail")
-                print(f"   * Expect exception: {expectedErr}")
-                print(f"   * Actual exception: {actualErr}")
-                passes = False
-
-    if passes:
+            print(f"Error: {e}")
+            print("Fail")
+    print("=====================================")
+    if actual == expected_outputs:
         print("Pass")
         return True
     print("Fail")
