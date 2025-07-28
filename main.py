@@ -1,19 +1,25 @@
-from functools import reduce
-
-
 class HashMap:
-    def key_to_index(self, key: str):
-        uni_sum = int(reduce(lambda x, y: x + ord(y), key, 0))
-        return uni_sum % len(self.hashmap)
+    def insert(self, key: str, value: object):
+        hashed_key = self.key_to_index(key)
+        key_value = (key, value)
+        self.hashmap[hashed_key] = key_value
 
     # don't touch below this line
 
     def __init__(self, size):
         self.hashmap = [None for i in range(size)]
 
+    def key_to_index(self, key):
+        sum = 0
+        for c in key:
+            sum += ord(c)
+        return sum % len(self.hashmap)
+
     def __repr__(self):
-        buckets = []
-        for v in self.hashmap:
+        final = ""
+        for i, v in enumerate(self.hashmap):
             if v != None:
-                buckets.append(v)
-        return str(buckets)
+                final += f" - {i}: {str(v)}\n"
+            else:
+                final += f" - {i}: None\n"
+        return final

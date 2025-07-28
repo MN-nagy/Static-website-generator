@@ -5,7 +5,7 @@ import random
 
 
 class User:
-    def __init__(self, id):
+    def __init__(self, id, age, job_title):
         self.id = id
         user_names = [
             "Blake",
@@ -29,6 +29,8 @@ class User:
             "Moses",
         ]
         self.user_name = f"{user_names[id % len(user_names)]}#{id}"
+        self.age = age
+        self.job_title = job_title
 
     def __eq__(self, other):
         return isinstance(other, User) and self.id == other.id
@@ -40,52 +42,95 @@ class User:
         return isinstance(other, User) and self.id > other.id
 
     def __repr__(self):
-        return "".join(self.user_name)
+        parts = self.user_name.split("#")
+        return f"(Name: {parts[0]}, ID: {self.id}, Age: {self.age}, Job Title: {self.job_title})"
 
 
 def get_users(num):
     random.seed(1)
+    job_titles = ["Engineer", "Designer", "Manager", "Clerk", "Analyst"]
     users = []
-    ids = []
-    for i in range(num * 3):
-        ids.append(i)
+    ids = list(range(num * 3))
     random.shuffle(ids)
     ids = ids[:num]
     for id in ids:
-        user = User(id)
+        age = random.randint(20, 60)
+        job_title = random.choice(job_titles)
+        user = User(id, age, job_title)
         users.append(user)
     return users
 
 
 run_cases = [
     (
-        8,
+        4,
         get_users(2),
-        [3, 6],
+        [
+            None,
+            None,
+            ("Dave#3", User(3, 50, "Clerk")),
+            ("Shelley#2", User(2, 51, "Clerk")),
+        ],
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        512,
-        get_users(6),
-        [360, 487, 150, 458, 112, 50],
+        16,
+        [
+            User(9, 44, "Designer"),
+            User(0, 47, "Engineer"),
+            User(11, 21, "Engineer"),
+            User(5, 54, "Engineer"),
+            User(17, 57, "Engineer"),
+            User(19, 40, "Engineer"),
+        ],
+        [
+            ("Burry#9", User(9, 44, "Designer")),
+            None,
+            ("Blake#0", User(0, 47, "Engineer")),
+            ("Shipley#11", User(11, 21, "Engineer")),
+            None,
+            None,
+            None,
+            ("John#5", User(5, 54, "Engineer")),
+            None,
+            None,
+            ("Lippmann#17", User(17, 57, "Engineer")),
+            None,
+            ("Blake#19", User(19, 40, "Engineer")),
+            None,
+            None,
+            None,
+        ],
     ),
 ]
 
 
-def test(size, users, expected_indexes):
+def test(size, users, expected_hashmap):
     print("---------------------------------")
+    print(f"Inputs:")
     print(f" * HashMap size: {size}")
     hm = HashMap(size)
     try:
-        actual = []
-        for i, user in enumerate(users):
-            index = hm.key_to_index(user.user_name)
-            print(f"  Expect  {user.user_name} -> {expected_indexes[i]}")
-            print(f"  Actual  {user.user_name} -> {index}")
-            actual.append(index)
-        if actual == expected_indexes:
+        for user in users:
+            hm.insert(user.user_name, user)
+            print(f"Inserted ({user.user_name}, {user})")
+
+        print(f"Expecting:")
+        i = 0
+        for item in expected_hashmap:
+            print(f"  [{i}] {item}")
+            i += 1
+
+        actual = hashmap_to_list(hm)
+        print(f"Actual:")
+        i = 0
+        for item in actual:
+            print(f"  [{i}] {item}")
+            i += 1
+
+        if actual == expected_hashmap:
             print("Pass \n")
             return True
         print("Fail \n")
@@ -93,6 +138,10 @@ def test(size, users, expected_indexes):
     except Exception as e:
         print(f"Error: {e}")
         return False
+
+
+def hashmap_to_list(hm):
+    return [v for v in hm.hashmap]
 
 
 def main():
