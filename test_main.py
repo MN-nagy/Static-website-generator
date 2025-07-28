@@ -1,4 +1,4 @@
-from main import *
+from main import HashMap
 from commit import commit
 
 import random
@@ -63,45 +63,24 @@ def get_users(num):
 
 run_cases = [
     (
-        4,
-        get_users(2),
+        512,
+        [User(1, 30, "Engineer"), User(2, 25, "Designer")],
         [
-            None,
-            None,
-            ("Dave#3", User(3, 50, "Clerk")),
-            ("Shelley#2", User(2, 51, "Clerk")),
+            ("Ricky#1", User(1, 30, "Engineer")),
+            ("Shelley#2", User(2, 25, "Designer")),
+            ("FakeyFaker#2", None),
         ],
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        16,
+        1028,
+        [User(4, 36, "Clerk"), User(5, 29, "Chef"), User(6, 55, "Pilot")],
         [
-            User(9, 44, "Designer"),
-            User(0, 47, "Engineer"),
-            User(11, 21, "Engineer"),
-            User(5, 54, "Engineer"),
-            User(17, 57, "Engineer"),
-            User(19, 40, "Engineer"),
-        ],
-        [
-            ("Burry#9", User(9, 44, "Designer")),
-            None,
-            ("Blake#0", User(0, 47, "Engineer")),
-            ("Shipley#11", User(11, 21, "Engineer")),
-            None,
-            None,
-            None,
-            ("John#5", User(5, 54, "Engineer")),
-            None,
-            None,
-            ("Lippmann#17", User(17, 57, "Engineer")),
-            None,
-            ("Blake#19", User(19, 40, "Engineer")),
-            None,
-            None,
-            None,
+            ("George#4", User(4, 36, "Clerk")),
+            ("John#5", User(5, 29, "Chef")),
+            ("Blake#1", None),
         ],
     ),
 ]
@@ -112,36 +91,43 @@ def test(size, users, expected_hashmap):
     print(f"Inputs:")
     print(f" * HashMap size: {size}")
     hm = HashMap(size)
-    try:
-        for user in users:
-            hm.insert(user.user_name, user)
-            print(f"Inserted ({user.user_name}, {user})")
+    for user in users:
+        hm.insert(user.user_name, user)
+        print(f"   * Inserted ({user.user_name}, {user})")
 
-        print(f"Expecting:")
-        i = 0
-        for item in expected_hashmap:
-            print(f"  [{i}] {item}")
-            i += 1
+    passes = True
+    for user_name, expected in expected_hashmap:
+        try:
+            result = hm.get(user_name)
+            if result == expected:
+                print(f"Get {user_name}: Pass")
+            else:
+                print(f"Get {user_name}: Fail")
+                print(f"   * Expect: {expected}")
+                print(f"   * Actual: {result}")
+                passes = False
+        except Exception as e:
+            actualErr = str(e)
+            expectedErr = "sorry, key not found"
 
-        actual = hashmap_to_list(hm)
-        print(f"Actual:")
-        i = 0
-        for item in actual:
-            print(f"  [{i}] {item}")
-            i += 1
+            if expected is not None:
+                print(f"Get {user_name}: Fail")
+                print(f"   * Expect: {expected}")
+                print(f"   * Actual: exception: {actualErr}")
+                passes = False
+            elif actualErr == expectedErr:
+                print(f"Get {user_name}: Pass")
+            else:
+                print(f"Get {user_name}: Fail")
+                print(f"   * Expect exception: {expectedErr}")
+                print(f"   * Actual exception: {actualErr}")
+                passes = False
 
-        if actual == expected_hashmap:
-            print("Pass \n")
-            return True
-        print("Fail \n")
-        return False
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
-
-
-def hashmap_to_list(hm):
-    return [v for v in hm.hashmap]
+    if passes:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
