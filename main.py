@@ -6,8 +6,7 @@ class HashMap:
 
     def resize(self):
         cl = self.current_load()
-        lenn = len(self.hashmap)
-        if lenn == 0:
+        if cl == 0:
             self.hashmap.append(None)
             return
         elif cl < 0.05:
@@ -30,7 +29,7 @@ class HashMap:
     def current_load(self):
         length = len(self.hashmap)
         if length == 0:
-            return 1
+            return 0
         filled_buckets = 0
         for i in self.hashmap:
             if i is not None:
