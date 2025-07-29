@@ -3,80 +3,85 @@ from commit import commit
 
 run_cases = [
     (
+        2,
         [
-            ("Billy Beane", 1),
-            ("Peter Brand", 2),
-            ("Art Howe", 3),
-            ("Scott Hatteberg", 4),
-            ("David Justice", 5),
-            ("Ron Washington", 6),
-            ("Paul DePodesta", 7),
+            ("Billy Beane", "General Manager"),
+            ("Peter Brand", "Assistant GM"),
         ],
+        [(False, None), (False, None)],
+    ),
+    (
+        3,
         [
-            (1.0, 1),
-            (0.2, 10),
-            (0.03, 100),
-            (0.04, 100),
-            (0.05, 100),
-            (0.006, 1000),
-            (0.007, 1000),
+            ("Art Howe", "Manager"),
+            ("Ron Washington", "Coach"),
+            ("David Justice", "Designated Hitter"),
         ],
-    )
+        [(False, None), (False, None), (False, None)],
+    ),
 ]
 
 submit_cases = run_cases + [
     (
+        2,
         [
-            ("Billy Beane", 1),
-            ("Peter Brand", 2),
-            ("Art Howe", 3),
-            ("Scott Hatteberg", 4),
-            ("David Justice", 5),
-            ("Ron Washington", 6),
-            ("Paul DePodesta", 7),
-            ("Chad Bradford", 8),
+            ("Paul DePodesta", "Analyst"),
+            ("Ron Washington", "Coach"),
+            ("Chad Bradford", "Pitcher"),
         ],
         [
-            (1.0, 1),
-            (0.2, 10),
-            (0.03, 100),
-            (0.04, 100),
-            (0.05, 100),
-            (0.006, 1000),
-            (0.007, 1000),
-            (0.008, 1000),
+            (False, None),
+            (False, None),
+            (True, "hashmap is full"),
         ],
     )
 ]
 
 
-def test(items, expected_outputs):
-    hm = HashMap(0)
+def test(size, items, errors):
+    hm = HashMap(size)
     print("=====================================")
-    actual = []
-    for i, item in enumerate(items):
-        key = item[0]
-        val = item[1]
-        expected_load = expected_outputs[i][0]
-        expected_size = expected_outputs[i][1]
-        print(f"insert({key}, {val})")
+    inserted_items = {}
+    for (key, val), (error_expected, expected_error_message) in zip(items, errors):
+        print(f"Inserting ({key}, {val})...")
         try:
             hm.insert(key, val)
-            print(f"Expect Load: {expected_load}")
-            print(f"Actual Load: {hm.current_load()}")
-            print(f"Expect Size: {expected_size}")
-            print(f"Actual Size: {len(hm.hashmap)}")
-            print("---------------------------------")
-            actual.append((hm.current_load(), len(hm.hashmap)))
+            if error_expected:
+                print(
+                    f"Expected error '{expected_error_message}' but insertion succeeded."
+                )
+                print("Fail")
+                return False
+            else:
+                inserted_items[key] = val
         except Exception as e:
-            print(f"Error: {e}")
+            if error_expected:
+                if str(e) == expected_error_message:
+                    print(f"Expected error occurred: {e}")
+                else:
+                    print(
+                        f"Error occurred, but message '{e}' does not match expected '{expected_error_message}'."
+                    )
+                    print("Fail")
+                    return False
+            else:
+                print(f"Unexpected error occurred during insertion: {e}")
+                print("Fail")
+                return False
+    for key, expected_val in inserted_items.items():
+        print(f"Getting {key}...")
+        try:
+            actual_val = hm.get(key)
+            print(f"Expected: {expected_val}, Actual: {actual_val}")
+            if actual_val != expected_val:
+                print("Fail")
+                return False
+        except Exception as e:
+            print(f"Error getting {key}: {e}")
             print("Fail")
-    print("=====================================")
-    if actual == expected_outputs:
-        print("Pass")
-        return True
-    print("Fail")
-    return False
+            return False
+    print("Pass")
+    return True
 
 
 def main():
