@@ -3,58 +3,34 @@ from main import *
 from commit import commit
 
 run_cases = [
-    (
-        ["dev", "devops", "devs"],
-        {
-            "d": {
-                "e": {
-                    "v": {"*": True, "o": {"p": {"s": {"*": True}}}, "s": {"*": True}}
-                }
-            }
-        },
-    ),
-    (
-        ["qa", "qaops", "qam"],
-        {
-            "q": {
-                "a": {"*": True, "o": {"p": {"s": {"*": True}}}, "m": {"*": True}},
-            }
-        },
-    ),
+    (["dev", "devops", "devs", "designer"], "devops", True),
+    (["manager", "qa", "dev", "intern"], "ceo", False),
+    (["engineer", "developer", "janitor"], "dev", False),
 ]
 
 submit_cases = run_cases + [
     (
-        ["pm", "po", "pojo", "pope", "cs", "ce", "ceo", "cfo"],
-        {
-            "p": {
-                "m": {"*": True},
-                "o": {"*": True, "j": {"o": {"*": True}}, "p": {"e": {"*": True}}},
-            },
-            "c": {
-                "s": {"*": True},
-                "e": {"*": True, "o": {"*": True}},
-                "f": {"o": {"*": True}},
-            },
-        },
+        ["dev", "developer", "devops", "manager"],
+        "hr",
+        False,
     ),
+    (["qa", "qaops", "qam"], "qaops", True),
 ]
 
 
-def test(words, expected_trie):
+def test(words, word_to_check, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * Words: {words}")
-    print(" * Expected trie:")
-    print(f"{json.dumps(expected_trie, sort_keys=True, indent=2)}")
+    trie = Trie()
+    for word in words:
+        trie.add(word)
+    print("Trie:")
+    print(json.dumps(trie.root, sort_keys=True, indent=2))
+    print(f'Checking if "{word_to_check}" exists:')
+    print(f"Expecting: {expected_output}")
     try:
-        trie = Trie()
-        for word in words:
-            trie.add(word)
-            print(f"Adding {word}...")
-        print("Actual Trie:")
-        print(json.dumps(trie.root, sort_keys=True, indent=2))
-        if trie.root == expected_trie:
+        actual = trie.exists(word_to_check)
+        print(f"Actual: {actual}")
+        if actual == expected_output:
             print("Pass \n")
             return True
         print("Fail \n")
