@@ -1,87 +1,67 @@
+import json
 from main import *
 from commit import commit
 
 run_cases = [
     (
-        2,
-        [
-            ("Billy Beane", "General Manager"),
-            ("Peter Brand", "Assistant GM"),
-        ],
-        [(False, None), (False, None)],
+        ["dev", "devops", "devs"],
+        {
+            "d": {
+                "e": {
+                    "v": {"*": True, "o": {"p": {"s": {"*": True}}}, "s": {"*": True}}
+                }
+            }
+        },
     ),
     (
-        3,
-        [
-            ("Art Howe", "Manager"),
-            ("Ron Washington", "Coach"),
-            ("David Justice", "Designated Hitter"),
-        ],
-        [(False, None), (False, None), (False, None)],
+        ["qa", "qaops", "qam"],
+        {
+            "q": {
+                "a": {"*": True, "o": {"p": {"s": {"*": True}}}, "m": {"*": True}},
+            }
+        },
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        2,
-        [
-            ("Paul DePodesta", "Analyst"),
-            ("Ron Washington", "Coach"),
-            ("Chad Bradford", "Pitcher"),
-        ],
-        [
-            (False, None),
-            (False, None),
-            (True, "hashmap is full"),
-        ],
-    )
+        ["pm", "po", "pojo", "pope", "cs", "ce", "ceo", "cfo"],
+        {
+            "p": {
+                "m": {"*": True},
+                "o": {"*": True, "j": {"o": {"*": True}}, "p": {"e": {"*": True}}},
+            },
+            "c": {
+                "s": {"*": True},
+                "e": {"*": True, "o": {"*": True}},
+                "f": {"o": {"*": True}},
+            },
+        },
+    ),
 ]
 
 
-def test(size, items, errors):
-    hm = HashMap(size)
-    print("=====================================")
-    inserted_items = {}
-    for (key, val), (error_expected, expected_error_message) in zip(items, errors):
-        print(f"Inserting ({key}, {val})...")
-        try:
-            hm.insert(key, val)
-            if error_expected:
-                print(
-                    f"Expected error '{expected_error_message}' but insertion succeeded."
-                )
-                print("Fail")
-                return False
-            else:
-                inserted_items[key] = val
-        except Exception as e:
-            if error_expected:
-                if str(e) == expected_error_message:
-                    print(f"Expected error occurred: {e}")
-                else:
-                    print(
-                        f"Error occurred, but message '{e}' does not match expected '{expected_error_message}'."
-                    )
-                    print("Fail")
-                    return False
-            else:
-                print(f"Unexpected error occurred during insertion: {e}")
-                print("Fail")
-                return False
-    for key, expected_val in inserted_items.items():
-        print(f"Getting {key}...")
-        try:
-            actual_val = hm.get(key)
-            print(f"Expected: {expected_val}, Actual: {actual_val}")
-            if actual_val != expected_val:
-                print("Fail")
-                return False
-        except Exception as e:
-            print(f"Error getting {key}: {e}")
-            print("Fail")
-            return False
-    print("Pass")
-    return True
+def test(words, expected_trie):
+    print("---------------------------------")
+    print(f"Inputs:")
+    print(f" * Words: {words}")
+    print(" * Expected trie:")
+    print(f"{json.dumps(expected_trie, sort_keys=True, indent=2)}")
+    try:
+        trie = Trie()
+        for word in words:
+            trie.add(word)
+            print(f"Adding {word}...")
+        print("Actual Trie:")
+        print(json.dumps(trie.root, sort_keys=True, indent=2))
+        if trie.root == expected_trie:
+            print("Pass \n")
+            return True
+        print("Fail \n")
+        return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 
 def main():
