@@ -3,34 +3,33 @@ from main import *
 from commit import commit
 
 run_cases = [
-    (["dev", "devops", "devs", "designer"], "devops", True),
-    (["manager", "qa", "dev", "intern"], "ceo", False),
-    (["engineer", "developer", "janitor"], "dev", False),
+    (["dev", "devops", "designer", "director"], "de", ["dev", "devops", "designer"]),
+    (["manager", "intern"], "z", []),
+    (["cto", "cfo", "coo", "ceo"], "c", ["cto", "cfo", "coo", "ceo"]),
 ]
 
 submit_cases = run_cases + [
     (
-        ["dev", "developer", "devops", "manager"],
-        "hr",
-        False,
+        ["developer", "designer", "devops", "director"],
+        "de",
+        ["developer", "designer", "devops"],
     ),
-    (["qa", "qaops", "qam"], "qaops", True),
 ]
 
 
-def test(words, word_to_check, expected_output):
+def test(words, prefix, expected_matches):
     print("---------------------------------")
+    print("Trie:")
     trie = Trie()
     for word in words:
         trie.add(word)
-    print("Trie:")
     print(json.dumps(trie.root, sort_keys=True, indent=2))
-    print(f'Checking if "{word_to_check}" exists:')
-    print(f"Expecting: {expected_output}")
+    print(f'Words with prefix: "{prefix}":')
+    print(f"Expecting: {sorted(expected_matches)}")
     try:
-        actual = trie.exists(word_to_check)
+        actual = trie.words_with_prefix(prefix)
         print(f"Actual: {actual}")
-        if actual == expected_output:
+        if (actual) == sorted(expected_matches):
             print("Pass \n")
             return True
         print("Fail \n")
