@@ -1,38 +1,20 @@
+# TODO:
 class Trie:
-    # def search_level(self, current_level, current_prefix, words: list):
-    #     if self.end_symbol in current_level:
-    #         words.append(current_prefix)
-    #     for letter in sorted(current_level.keys()):
-    #         if letter == self.end_symbol:
-    #             continue
-    #         self.search_level(current_level[letter], current_prefix + letter, words)
-    #     return words
+    def find_matches(self, document):
+        matches = set()
+        for i in range(len(document)):
+            current_level = self.root
+            for j in range(i, len(document)):
+                char = document[j]
+                if char not in current_level:
+                    break
+                else:
+                    current_level = current_level[char]
 
-    def search_level(self, start_node, current_prefix):
-        words = []
-        stack = [(start_node, current_prefix)]
-
-        while stack:
-            node, prefix = stack.pop()
-
-            if self.end_symbol in node:
-                words.append(prefix)
-
-            for letter in sorted(node.keys(), reverse=True):
-                if letter == self.end_symbol:
-                    continue
-                child_node = node[letter]
-                new_prefix = prefix + letter
-                stack.append((child_node, new_prefix))
-        return words
-
-    def words_with_prefix(self, prefix):
-        current_level = self.root
-        for letter in prefix:
-            if letter not in current_level:
-                return []
-            current_level = current_level[letter]
-        return self.search_level(current_level, prefix)
+                    if self.end_symbol in current_level:
+                        matched_word = document[i : j + 1]
+                        matches.add(matched_word)
+        return matches
 
     # don't touch below this line
 
@@ -41,9 +23,9 @@ class Trie:
         self.end_symbol = "*"
 
     def add(self, word):
-        current_level = self.root
+        current = self.root
         for letter in word:
-            if letter not in current_level:
-                current_level[letter] = {}
-            current_level = current_level[letter]
-        current_level[self.end_symbol] = True
+            if letter not in current:
+                current[letter] = {}
+            current = current[letter]
+        current[self.end_symbol] = True
