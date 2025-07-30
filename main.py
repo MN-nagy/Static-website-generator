@@ -1,20 +1,24 @@
-# TODO:
 class Trie:
-    def find_matches(self, document):
-        matches = set()
-        for i in range(len(document)):
-            current_level = self.root
-            for j in range(i, len(document)):
-                char = document[j]
-                if char not in current_level:
-                    break
-                else:
-                    current_level = current_level[char]
+    def longest_common_prefix(self):
+        current = self.root
+        prefix = ""
+        while True:
+            children = current.keys()
+            children_list = list(children)
 
-                    if self.end_symbol in current_level:
-                        matched_word = document[i : j + 1]
-                        matches.add(matched_word)
-        return matches
+            if self.end_symbol in children_list:
+                break
+
+            children_count = len(children_list)
+
+            if children_count == 1:
+                char = children_list[0]
+                prefix += char
+                current = current[char]
+            else:
+                break
+
+        return prefix
 
     # don't touch below this line
 
