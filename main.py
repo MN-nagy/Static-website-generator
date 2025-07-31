@@ -1,20 +1,18 @@
 class Graph:
-    def __init__(self, num_vertices):
-        self.graph = [[False for _ in range(num_vertices)] for _ in range(num_vertices)]
+    def __init__(self):
+        self.graph = {}
 
     def add_edge(self, u, v):
-        # u and v are two vertices
-        self.graph[u][v] = True
-        self.graph[v][u] = True
+        if u not in self.graph:
+            self.graph[u] = set()
+        if v not in self.graph:
+            self.graph[v] = set()
+        self.graph[u].add(v)
+        self.graph[v].add(u)
 
     # don't touch below this line
 
     def edge_exists(self, u, v):
-        if u < 0 or u >= len(self.graph):
-            return False
-        if len(self.graph) == 0:
-            return False
-        row1 = self.graph[0]
-        if v < 0 or v >= len(row1):
-            return False
-        return self.graph[u][v]
+        if u in self.graph and v in self.graph:
+            return (v in self.graph[u]) and (u in self.graph[v])
+        return False
