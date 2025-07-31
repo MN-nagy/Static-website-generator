@@ -1,89 +1,86 @@
-import json
 from commit import commit
-from main import Trie
+from main import *
 
 run_cases = [
     (
+        3,
         [
-            "darnit",
-            "nope",
-            "bad",
+            (0, 1),
+            (2, 0),
         ],
-        "This is a d@rn1t test with b@d words!",
-        {
-            "@": "a",
-            "1": "i",
-            "4": "a",
-            "!": "i",
-        },
-        [
-            "b@d",
-            "d@rn1t",
-        ],
+        (
+            [
+                (1, 0),
+                (1, 2),
+                (2, 0),
+            ],
+            [True, False, True],
+        ),
     ),
     (
+        6,
         [
-            "darn",
-            "shoot",
-            "gosh",
+            (0, 1),
+            (1, 2),
+            (2, 3),
+            (3, 4),
+            (4, 5),
         ],
-        "h3ck this fudg!ng thing",
-        {
-            "@": "a",
-            "3": "e",
-        },
-        [],
-    ),
-    (
-        [
-            "dang",
-            "darn",
-            "heck",
-            "gosh",
-        ],
-        "d@ng it to h3ck",
-        {
-            "@": "a",
-            "3": "e",
-        },
-        ["d@ng", "h3ck"],
+        (
+            [
+                (0, 1),
+                (1, 2),
+                (0, 4),
+                (2, 5),
+                (5, 0),
+            ],
+            [True, True, False, False, False],
+        ),
     ),
 ]
 submit_cases = run_cases + [
     (
+        6,
         [
-            "darn",
-            "shoot",
-            "fudging",
+            (0, 1),
+            (2, 4),
+            (2, 1),
+            (3, 1),
+            (4, 5),
         ],
-        "sh00t, I hate this fudg!ng assignment",
-        {
-            "@": "a",
-            "3": "e",
-            "0": "o",
-            "!": "i",
-        },
-        ["sh00t", "fudg!ng"],
+        (
+            [
+                (5, 4),
+                (1, 5),
+                (0, 4),
+                (2, 5),
+                (1, 3),
+            ],
+            [True, False, False, False, True],
+        ),
     ),
 ]
 
 
-def test(words, document, variations, expected_matches):
+def test(num_of_vertices, edges_to_add, edges_to_check):
+    print("=================================")
+    graph = Graph(num_of_vertices)
+    for edge in edges_to_add:
+        graph.add_edge(edge[0], edge[1])
+        print(f"Added edge: {edge}")
     print("---------------------------------")
-    print("Document:")
-    print(document)
-    print(f"Variations: {variations}")
-    print(f"Expected matches: {sorted(expected_matches)}")
     try:
-        trie = Trie()
-        for word in words:
-            trie.add(word)
-        actual = sorted(trie.advanced_find_matches(document, variations))
-        print(f"Actual matches: {actual}")
-        if actual == sorted(expected_matches):
-            print("Pass \n")
+        actual = []
+        for i, edge in enumerate(edges_to_check[0]):
+            exists = graph.edge_exists(edge[0], edge[1])
+            actual.append(exists)
+            print(f"{edge} exists:")
+            print(f" - Expecting: {edges_to_check[1][i]}")
+            print(f" - Actual: {exists}")
+        if actual == edges_to_check[1]:
+            print("Pass")
             return True
-        print("Fail \n")
+        print("Fail")
         return False
     except Exception as e:
         print(f"Error: {e}")
