@@ -1,39 +1,84 @@
 import json
 from commit import commit
-from main import *
+from main import Trie
 
 run_cases = [
     (
-        ["synergy", "alignment", "leverage", "bandwidth"],
-        "Let's leverage our synergy to realign our bandwidth",
-        ["synergy", "leverage", "bandwidth"],
+        [
+            "darnit",
+            "nope",
+            "bad",
+        ],
+        "This is a d@rn1t test with b@d words!",
+        {
+            "@": "a",
+            "1": "i",
+            "4": "a",
+            "!": "i",
+        },
+        [
+            "b@d",
+            "d@rn1t",
+        ],
     ),
     (
-        ["circle", "back", "touch", "base"],
-        "Let's circle back to touch base",
-        ["circle", "back", "touch", "base"],
+        [
+            "darn",
+            "shoot",
+            "gosh",
+        ],
+        "h3ck this fudg!ng thing",
+        {
+            "@": "a",
+            "3": "e",
+        },
+        [],
+    ),
+    (
+        [
+            "dang",
+            "darn",
+            "heck",
+            "gosh",
+        ],
+        "d@ng it to h3ck",
+        {
+            "@": "a",
+            "3": "e",
+        },
+        ["d@ng", "h3ck"],
     ),
 ]
-
 submit_cases = run_cases + [
     (
-        ["pivot", "innovate", "scalable", "proactive"],
-        "We need to pivot and innovate for truly scalable solutions",
-        ["pivot", "innovate", "scalable"],
+        [
+            "darn",
+            "shoot",
+            "fudging",
+        ],
+        "sh00t, I hate this fudg!ng assignment",
+        {
+            "@": "a",
+            "3": "e",
+            "0": "o",
+            "!": "i",
+        },
+        ["sh00t", "fudg!ng"],
     ),
 ]
 
 
-def test(words, document, expected_matches):
+def test(words, document, variations, expected_matches):
     print("---------------------------------")
-    print("Trie:")
-    trie = Trie()
-    for word in words:
-        trie.add(word)
-    print(json.dumps(trie.root, sort_keys=True, indent=2))
+    print("Document:")
+    print(document)
+    print(f"Variations: {variations}")
     print(f"Expected matches: {sorted(expected_matches)}")
     try:
-        actual = sorted(trie.find_matches(document))
+        trie = Trie()
+        for word in words:
+            trie.add(word)
+        actual = sorted(trie.advanced_find_matches(document, variations))
         print(f"Actual matches: {actual}")
         if actual == sorted(expected_matches):
             print("Pass \n")
