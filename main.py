@@ -1,18 +1,17 @@
 class Trie:
-    def longest_common_prefix(self):
-        current = self.root
-        prefix = ""
-        while True:
-            children = list(current.keys())
-            if self.end_symbol in children:
-                break
-            children_len = len(children)
-            if children_len == 1:
-                prefix += children[0]
-                current = current[children[0]]
-            else:
-                break
-        return prefix
+    def find_matches(self, document):
+        matches = set()
+        for index in range(len(document)):
+            current_level = self.root
+            for sec_index in range(index, len(document)):
+                char = document[sec_index]
+                if char not in current_level:
+                    break
+                else:
+                    current_level = current_level[char]
+                if self.end_symbol in current_level:
+                    matches.add(document[index : sec_index + 1])
+        return matches
 
     # don't touch below this line
 
