@@ -1,6 +1,6 @@
 class Graph:
     def __init__(self, num_vertices):
-        self.graph = [[False for n in range(num_vertices)] for i in range(num_vertices)]
+        self.graph = [[False for _ in range(num_vertices)] for _ in range(num_vertices)]
 
     def add_edge(self, u, v):
         # u and v are two vertices
