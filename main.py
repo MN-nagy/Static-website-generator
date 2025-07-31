@@ -3,21 +3,15 @@ class Trie:
         current = self.root
         prefix = ""
         while True:
-            children = current.keys()
-            children_list = list(children)
-
-            if self.end_symbol in children_list:
+            children = list(current.keys())
+            if self.end_symbol in children:
                 break
-
-            children_count = len(children_list)
-
-            if children_count == 1:
-                char = children_list[0]
-                prefix += char
-                current = current[char]
+            children_len = len(children)
+            if children_len == 1:
+                prefix += children[0]
+                current = current[children[0]]
             else:
                 break
-
         return prefix
 
     # don't touch below this line
