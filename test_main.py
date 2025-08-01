@@ -10,7 +10,7 @@ run_cases = [
             ("London", "Dubai"),
         ],
         "New York",
-        ["New York", "Cairo", "London", "Tokyo", "Dubai"],
+        ["New York", "Cairo", "London", "Dubai", "Tokyo"],
     ),
 ]
 submit_cases = run_cases + [
@@ -31,13 +31,13 @@ submit_cases = run_cases + [
         [
             "New York",
             "Buenos Aires",
-            "Cairo",
-            "London",
             "Tokyo",
+            "Cairo",
             "Kyiv",
-            "Madrid",
-            "Dubai",
             "San Francisco",
+            "Madrid",
+            "London",
+            "Dubai",
         ],
     ),
 ]
@@ -51,7 +51,7 @@ def test(edges_to_add, starting_at, expected_visited):
         print(f"Added edge: {edge}")
     print("---------------------------------")
     try:
-        bfs = graph.breadth_first_search(starting_at)
+        bfs = graph.depth_first_search(starting_at)
         for i, v in enumerate(bfs):
             print(f"Visiting:  {v}")
             print(f"Expecting: {expected_visited[i]}")

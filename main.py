@@ -1,22 +1,17 @@
-from collections import deque
-
-
 class Graph:
-    def breadth_first_search(self, v):
-        order = []
-        visited = {v}
-        to_visite = deque([v])
-        while to_visite:
-            vertex_name = to_visite.popleft()
-            vertex = sorted(self.graph[vertex_name])
-            for neighbor in vertex:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    to_visite.append(neighbor)
-            order.append(vertex_name)
-        return order
+    def depth_first_search(self, start_vertex):
+        visited = []
+        self.depth_first_search_r(visited, start_vertex)
+        return visited
 
-    # don't touch below this line
+    def depth_first_search_r(self, visited: list, current_vertex):
+        visited.append(current_vertex)
+        neighbors = sorted(self.graph[current_vertex])
+        for neighbor in neighbors:
+            if neighbor not in visited:
+                self.depth_first_search_r(visited, neighbor)
+
+        # don't touch below this line
 
     def __init__(self):
         self.graph = {}
