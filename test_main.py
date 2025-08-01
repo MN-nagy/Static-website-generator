@@ -4,51 +4,62 @@ from main import *
 run_cases = [
     (
         [
-            (0, 1),
-            (1, 2),
-            (2, 3),
-            (3, 4),
-            (4, 5),
+            ("New York", "London"),
+            ("New York", "Cairo"),
+            ("New York", "Tokyo"),
+            ("London", "Dubai"),
         ],
-        [6, 7],
-    ),
-    (
-        [
-            (1, 2),
-            (1, 3),
-        ],
-        [0, 4],
+        "New York",
+        ["New York", "Cairo", "London", "Tokyo", "Dubai"],
     ),
 ]
 submit_cases = run_cases + [
     (
         [
-            (0, 5),
-            (7, 0),
+            ("New York", "London"),
+            ("New York", "Cairo"),
+            ("New York", "Tokyo"),
+            ("London", "Dubai"),
+            ("Cairo", "Kyiv"),
+            ("Cairo", "Madrid"),
+            ("London", "Madrid"),
+            ("Buenos Aires", "New York"),
+            ("Tokyo", "Buenos Aires"),
+            ("Kyiv", "San Francisco"),
         ],
-        [1, 2, 3, 4],
-    )
+        "New York",
+        [
+            "New York",
+            "Buenos Aires",
+            "Cairo",
+            "London",
+            "Tokyo",
+            "Kyiv",
+            "Madrid",
+            "Dubai",
+            "San Francisco",
+        ],
+    ),
 ]
 
 
-def test(edges_to_add, expected_vertices):
+def test(edges_to_add, starting_at, expected_visited):
     print("=================================")
     graph = Graph()
     for edge in edges_to_add:
         graph.add_edge(edge[0], edge[1])
         print(f"Added edge: {edge}")
-    for node in expected_vertices:
-        graph.add_node(node)
-        print(f"Added unconnected node: {node}")
     print("---------------------------------")
     try:
-        unconnected = graph.unconnected_vertices()
-        print(f" - Expecting: {expected_vertices}")
-        print(f" - Actual: {unconnected}")
-        if unconnected == expected_vertices:
-            print("Pass \n")
+        bfs = graph.breadth_first_search(starting_at)
+        for i, v in enumerate(bfs):
+            print(f"Visiting:  {v}")
+            print(f"Expecting: {expected_visited[i]}")
+
+        if bfs == expected_visited:
+            print("Pass")
             return True
-        print("Fail \n")
+        print("Fail")
         return False
     except Exception as e:
         print(f"Error: {e}")
