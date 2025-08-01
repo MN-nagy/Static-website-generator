@@ -1,9 +1,9 @@
-def tsp(cities, paths, dist):
-    p = permutations(cities)
-    for path in p:
+def tsp(cities, distances, dist):
+    paths = permutations(cities)
+    for path in paths:
         total = 0
         for i in range(len(path) - 1):
-            total += paths[path[i]][path[i + 1]]
+            total += distances[path[i]][path[i + 1]]
         if total < dist:
             return True
 
