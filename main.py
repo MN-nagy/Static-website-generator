@@ -1,35 +1,33 @@
-class Graph:
-    def depth_first_search(self, start_vertex):
-        visited = []
-        self.depth_first_search_r(visited, start_vertex)
-        return visited
+def tsp(cities, paths, dist):
+    p = permutations(cities)
+    for path in p:
+        total = 0
+        for i in range(len(path) - 1):
+            total += paths[path[i]][path[i + 1]]
+        if total < dist:
+            return True
 
-    def depth_first_search_r(self, visited: list, current_vertex):
-        visited.append(current_vertex)
-        neighbors = sorted(self.graph[current_vertex])
-        for neighbor in neighbors:
-            if neighbor not in visited:
-                self.depth_first_search_r(visited, neighbor)
+    return False
 
-        # don't touch below this line
 
-    def __init__(self):
-        self.graph = {}
+# don't touch below this line
 
-    def add_edge(self, u, v):
-        if u in self.graph.keys():
-            self.graph[u].add(v)
-        else:
-            self.graph[u] = set([v])
-        if v in self.graph.keys():
-            self.graph[v].add(u)
-        else:
-            self.graph[v] = set([u])
 
-    def __repr__(self):
-        result = ""
-        for key in self.graph.keys():
-            result += f"Vertex: '{key}'\n"
-            for v in sorted(self.graph[key]):
-                result += f"has an edge leading to --> {v} \n"
-        return result
+def permutations(arr):
+    res = []
+    res = helper(res, arr, len(arr))
+    return res
+
+
+def helper(res, arr, n):
+    if n == 1:
+        tmp = arr.copy()
+        res.append(tmp)
+    else:
+        for i in range(n):
+            res = helper(res, arr, n - 1)
+            if n % 2 == 1:
+                arr[n - 1], arr[i] = arr[i], arr[n - 1]
+            else:
+                arr[0], arr[n - 1] = arr[n - 1], arr[0]
+    return res
