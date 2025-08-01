@@ -5,61 +5,39 @@ run_cases = [
     (
         [
             (0, 1),
-            (2, 0),
-        ],
-        (
-            [
-                (1, 0),
-                (1, 2),
-                (2, 0),
-            ],
-            [True, False, True],
-        ),
-    ),
-    (
-        [
-            (0, 1),
             (1, 2),
             (2, 3),
             (3, 4),
             (4, 5),
         ],
-        (
-            [
-                (0, 1),
-                (1, 2),
-                (0, 4),
-                (2, 5),
-                (5, 0),
-            ],
-            [True, True, False, False, False],
-        ),
+        ([0, 1, 2, 3, 4, 5], [{1}, {0, 2}, {1, 3}, {2, 4}, {3, 5}, {4}]),
+    ),
+    (
+        [
+            (0, 1),
+            (0, 2),
+            (0, 3),
+            (1, 2),
+            (1, 3),
+        ],
+        ([0, 1, 2, 3], [{1, 2, 3}, {0, 2, 3}, {0, 1}, {0, 1}]),
     ),
 ]
 submit_cases = run_cases + [
     (
         [
-            (0, 1),
+            (0, 2),
             (2, 4),
             (2, 1),
             (3, 1),
             (4, 5),
         ],
-        (
-            [
-                (5, 4),
-                (1, 5),
-                (0, 4),
-                (2, 5),
-                (1, 3),
-            ],
-            [True, False, False, False, True],
-        ),
+        ([0, 2, 5], [{2}, {0, 1, 4}, {4}]),
     ),
 ]
 
 
-def test(edges_to_add, edges_to_check):
+def test(edges_to_add, test_nodes):
     print("=================================")
     graph = Graph()
     for edge in edges_to_add:
@@ -68,13 +46,13 @@ def test(edges_to_add, edges_to_check):
     print("---------------------------------")
     try:
         actual = []
-        for i, edge in enumerate(edges_to_check[0]):
-            exists = graph.edge_exists(edge[0], edge[1])
-            actual.append(exists)
-            print(f"{edge} exists:")
-            print(f" - Expecting: {edges_to_check[1][i]}")
-            print(f" - Actual: {exists}")
-        if actual == edges_to_check[1]:
+        for i, edge in enumerate(test_nodes[0]):
+            adj_nodes = graph.adjacent_nodes(edge)
+            actual.append(adj_nodes)
+            print(f"Adjacent nodes of {edge}:")
+            print(f" - Expecting: {test_nodes[1][i]}")
+            print(f" - Actual: {adj_nodes}")
+        if actual == test_nodes[1]:
             print("Pass \n")
             return True
         print("Fail \n")
