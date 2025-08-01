@@ -10,49 +10,42 @@ run_cases = [
             (3, 4),
             (4, 5),
         ],
-        ([0, 1, 2, 3, 4, 5], [{1}, {0, 2}, {1, 3}, {2, 4}, {3, 5}, {4}]),
+        [6, 7],
     ),
     (
         [
-            (0, 1),
-            (0, 2),
-            (0, 3),
             (1, 2),
             (1, 3),
         ],
-        ([0, 1, 2, 3], [{1, 2, 3}, {0, 2, 3}, {0, 1}, {0, 1}]),
+        [0, 4],
     ),
 ]
 submit_cases = run_cases + [
     (
         [
-            (0, 2),
-            (2, 4),
-            (2, 1),
-            (3, 1),
-            (4, 5),
+            (0, 5),
+            (7, 0),
         ],
-        ([0, 2, 5], [{2}, {0, 1, 4}, {4}]),
-    ),
+        [1, 2, 3, 4],
+    )
 ]
 
 
-def test(edges_to_add, test_nodes):
+def test(edges_to_add, expected_vertices):
     print("=================================")
     graph = Graph()
     for edge in edges_to_add:
         graph.add_edge(edge[0], edge[1])
         print(f"Added edge: {edge}")
+    for node in expected_vertices:
+        graph.add_node(node)
+        print(f"Added unconnected node: {node}")
     print("---------------------------------")
     try:
-        actual = []
-        for i, edge in enumerate(test_nodes[0]):
-            adj_nodes = graph.adjacent_nodes(edge)
-            actual.append(adj_nodes)
-            print(f"Adjacent nodes of {edge}:")
-            print(f" - Expecting: {test_nodes[1][i]}")
-            print(f" - Actual: {adj_nodes}")
-        if actual == test_nodes[1]:
+        unconnected = graph.unconnected_vertices()
+        print(f" - Expecting: {expected_vertices}")
+        print(f" - Actual: {unconnected}")
+        if unconnected == expected_vertices:
             print("Pass \n")
             return True
         print("Fail \n")

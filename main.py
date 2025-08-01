@@ -1,6 +1,10 @@
 class Graph:
-    def adjacent_nodes(self, node):
-        return self.graph[node]
+    def unconnected_vertices(self):
+        res = []
+        for vertex, connections in self.graph.items():
+            if len(connections) == 0:
+                res.append(vertex)
+        return res
 
     # don't touch below this line
 
@@ -16,3 +20,7 @@ class Graph:
             self.graph[v].add(u)
         else:
             self.graph[v] = {u}
+
+    def add_node(self, u):
+        if u not in self.graph:
+            self.graph[u] = set()
