@@ -1,33 +1,8 @@
-def tsp(cities, distances, dist):
-    paths = permutations(cities)
-    for path in paths:
-        total = 0
-        for i in range(len(path) - 1):
-            total += distances[path[i]][path[i + 1]]
-        if total < dist:
+def verify_tsp(paths, final_dist, actual_path):
+    for city in actual_path:
+        sum_distances = 0
+        for dist in paths[city]:
+            sum_distances += dist
+        if sum_distances < final_dist:
             return True
-
     return False
-
-
-# don't touch below this line
-
-
-def permutations(arr):
-    res = []
-    res = helper(res, arr, len(arr))
-    return res
-
-
-def helper(res, arr, n):
-    if n == 1:
-        tmp = arr.copy()
-        res.append(tmp)
-    else:
-        for i in range(n):
-            res = helper(res, arr, n - 1)
-            if n % 2 == 1:
-                arr[n - 1], arr[i] = arr[i], arr[n - 1]
-            else:
-                arr[0], arr[n - 1] = arr[n - 1], arr[0]
-    return res
