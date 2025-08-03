@@ -1,29 +1,37 @@
 from commit import commit
 from main import *
 
-run_cases = [(8, [2, 2, 2]), (10, [2, 5]), (24, [2, 2, 2, 3]), (13, [13])]
+run_cases = [
+    ([3, 34, 4, 12, 5, 2], 9, True),
+    ([1, 2, 3], 7, False),
+]
 
 submit_cases = run_cases + [
-    (49, [7, 7]),
-    (77, [7, 11]),
-    (4, [2, 2]),
-    (64, [2, 2, 2, 2, 2, 2]),
-    (63, [3, 3, 7]),
-    (36, [2, 2, 3, 3]),
+    ([1, 2, 3, 8, 9, 10], 7, False),
+    ([1, 2, 3, 4, 5, 6, 7, 8, 9], 15, True),
+    ([3, 2, 7, 1], 6, True),
+    ([10, 20, 30, 40, 50], 60, True),
+    (
+        [1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+        500,
+        False,
+    ),
 ]
 
 
-def test(input1, expected_output):
+def test(nums, target, expected_output):
     print("---------------------------------")
-    print(f"Input: {input1}")
-    print(f"Expecting: {expected_output}")
-    result = prime_factors(input1)
-    print(f"Actual: {result}")
+    print(f"Nums: {nums}")
+    print(f"Target: {target}")
+    print(f"Expected Output: {expected_output}")
+    result = subset_sum(nums, target)
+    print(f"Actual Output: {result}")
     if result == expected_output:
         print("Pass")
         return True
-    print("Fail")
-    return False
+    else:
+        print("Fail")
+        return False
 
 
 def main():

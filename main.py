@@ -1,16 +1,21 @@
-import math
+from typing import List
 
 
-def prime_factors(n):
-    factors = []
-    factored = n
-    while factored % 2 == 0:
-        factored //= 2
-        factors.append(2)
-    for i in range(3, int(math.sqrt(factored)) + 1, 2):
-        while factored % i == 0:
-            factored //= i
-            factors.append(i)
-    if factored > 2:
-        factors.append(factored)
-    return factors
+def subset_sum(nums: List[int], target: int) -> bool:
+    return find_subset_sum(nums, target, len(nums) - 1)
+
+
+def find_subset_sum(nums: List[int], target: int, index: int) -> bool:
+    if target == 0:
+        return True
+    if index < 0:
+        return False
+    if nums[index] > target:
+        return find_subset_sum(nums, target, index - 1)
+    else:
+        res1 = find_subset_sum(nums, target, index - 1)
+        res2 = find_subset_sum(nums, target - nums[index], index - 1)
+        if res1 == True or res2 == True:
+            return True
+        else:
+            return False
