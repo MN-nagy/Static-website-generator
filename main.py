@@ -9,7 +9,7 @@ def prime_factors(n):
             break
         factored //= 2
         factors.append(2)
-    for i in range(3, int(math.sqrt(factored)) + 1):
+    for i in range(3, int(math.sqrt(factored)) + 1, 2):
         while factored % i == 0:
             factored //= i
             factors.append(i)
