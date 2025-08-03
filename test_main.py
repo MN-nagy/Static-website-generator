@@ -1,27 +1,23 @@
 from commit import commit
 from main import *
 
-run_cases = [
-    (1, 26),
-    (2, 702),
-    (3, 18278),
-]
+run_cases = [(8, [2, 2, 2]), (10, [2, 5]), (24, [2, 2, 2, 3]), (13, [13])]
 
 submit_cases = run_cases + [
-    (4, 475254),
-    (5, 12356630),
-    (6, 321272406),
-    (7, 8353082582),
-    (8, 217180147158),
-    (9, 5646683826134),
+    (49, [7, 7]),
+    (77, [7, 11]),
+    (4, [2, 2]),
+    (64, [2, 2, 2, 2, 2, 2]),
+    (63, [3, 3, 7]),
+    (36, [2, 2, 3, 3]),
 ]
 
 
-def test(input, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Input: {input}")
+    print(f"Input: {input1}")
     print(f"Expecting: {expected_output}")
-    result = get_num_guesses(input)
+    result = prime_factors(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
