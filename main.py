@@ -1,5 +1,6 @@
-def verify_tsp(paths, final_dist, actual_path):
-    total = 0
-    for i in range(len(actual_path) - 1):
-        total += paths[actual_path[i]][actual_path[i + 1]]
-    return total < final_dist
+def get_num_guesses(length):
+    N = 26
+    total_gusses = 0
+    for i in range(1, length + 1):
+        total_gusses += N**i
+    return total_gusses

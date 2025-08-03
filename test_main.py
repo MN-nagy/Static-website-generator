@@ -2,77 +2,32 @@ from commit import commit
 from main import *
 
 run_cases = [
-    ([[0, 394], [394, 0]], 3458, [0, 1], True),
-    ([[0, 911, 430], [911, 0, 41], [430, 41, 0]], 3104, [1, 2, 0], True),
-    ([[0, 10, 1], [10, 0, 1], [1, 1, 0]], 9, [0, 2, 1], True),
+    (1, 26),
+    (2, 702),
+    (3, 18278),
 ]
 
 submit_cases = run_cases + [
-    (
-        [
-            [0, 988, 523, 497],
-            [988, 0, 414, 940],
-            [523, 414, 0, 802],
-            [497, 940, 802, 0],
-        ],
-        1060,
-        [1, 0, 2, 3],
-        False,
-    ),
-    (
-        [
-            [0, 310, 991, 488, 366],
-            [310, 0, 597, 913, 929],
-            [991, 597, 0, 223, 516],
-            [488, 913, 223, 0, 142],
-            [366, 929, 516, 142, 0],
-        ],
-        3399,
-        [0, 1, 3, 4, 2],
-        True,
-    ),
-    (
-        [
-            [0, 143, 773, 97, 633, 818],
-            [143, 0, 256, 931, 545, 722],
-            [773, 256, 0, 829, 616, 923],
-            [97, 931, 829, 0, 150, 317],
-            [633, 545, 616, 150, 0, 101],
-            [818, 722, 923, 317, 101, 0],
-        ],
-        1480,
-        [0, 3, 2, 4, 5, 1],
-        False,
-    ),
+    (4, 475254),
+    (5, 12356630),
+    (6, 321272406),
+    (7, 8353082582),
+    (8, 217180147158),
+    (9, 5646683826134),
 ]
 
 
-def print_matrix(mat):
-    n = len(mat)
-    m = len(mat[0])
-    for i in range(n):
-        print(mat[i])
-
-
-def test(paths, dist, actual_path, expected_output):
-    try:
-        print("---------------------------------")
-        print(f"Paths:")
-        print_matrix(paths)
-        print(f"Checking for a path shorter than {dist}")
-        print(f"Using path: {actual_path}")
-        print(f"Expecting: {expected_output}")
-        result = verify_tsp(paths, dist, actual_path)
-        print(f"Actual: {result}")
-        if result == expected_output:
-            print("Pass")
-            return True
-        print("Fail")
-        return False
-    except Exception as e:
-        print("Fail")
-        print(e)
-        return False
+def test(input, expected_output):
+    print("---------------------------------")
+    print(f"Input: {input}")
+    print(f"Expecting: {expected_output}")
+    result = get_num_guesses(input)
+    print(f"Actual: {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
