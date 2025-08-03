@@ -10,13 +10,9 @@ def prime_factors(n):
         factored //= 2
         factors.append(2)
     for i in range(3, int(math.sqrt(factored)) + 1):
-        if factored % i == 0:
-            j = i
-            while True:
-                if not factored % j == 0:
-                    break
-                factored //= j
-                factors.append(j)
+        while factored % i == 0:
+            factored //= i
+            factors.append(i)
     if factored > 2:
         factors.append(factored)
     return factors
