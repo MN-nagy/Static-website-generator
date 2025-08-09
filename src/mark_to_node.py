@@ -24,3 +24,12 @@ def split_nodes_delimiter(
                     new_nodes.append(TextNode(part, text_type))
 
     return new_nodes
+
+
+# TODO: complete both functions
+def split_nodes_image(old_nodes):
+    pass
+
+
+def split_nodes_link(old_nodes):
+    pass
