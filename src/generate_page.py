@@ -7,6 +7,7 @@ def generate_page(
     from_path: str = os.path.abspath("content/index.md"),
     template_path: str = os.path.abspath("template.html"),
     dest_path: str = os.path.abspath("public/index.html"),
+    basepath=None,
 ):
 
     print(f"Generating page from {from_path} -> {dest_path}, using {template_path}")
@@ -29,6 +30,9 @@ def generate_page(
 
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", content)
+    if basepath:
+        template = template.replace('href="/', f'href="{basepath}')
+        template = template.replace('src="/', f'src="{basepath}')
 
     dst = os.path.abspath(dest_path)
     os.makedirs(os.path.dirname(dst), exist_ok=True)

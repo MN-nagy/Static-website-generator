@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-def copy_recursive(src, dst):
+def copy_recursive(src: str, dst: str) -> None:
 
     if not os.path.exists(dst):
         os.makedirs(dst)
@@ -22,9 +22,9 @@ def copy_recursive(src, dst):
             shutil.copy(s_item, d_item)
 
 
-def generate_public():
-    public = os.path.abspath("public")
-    static = os.path.abspath("static")
+def generate_public(
+    public: str = os.path.abspath("public"), static: str = os.path.abspath("static")
+) -> None:
 
     if os.path.exists(public):
         shutil.rmtree(public)
