@@ -27,8 +27,7 @@ class TestTextNode(unittest.TestCase):
 
     def test_no_value(self):
         node = LeafNode("p", None)
-        with self.assertRaises(ValueError):
-            node.to_html()
+        self.assertEqual("<p></p>", node.to_html())
 
     def test_tag_none(self):
         node = LeafNode(None, "Hello, world!")

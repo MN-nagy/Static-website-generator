@@ -22,11 +22,10 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, children=None, props=props)
 
     def to_html(self) -> str:
-        if not self.value:
-            raise ValueError
+        value_str = "" if self.value is None else str(self.value)
         if self.tag is None:
             return str(self.value)
-        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+        return f"<{self.tag} {self.props_to_html()}>{value_str}</{self.tag}>"
 
 
 class ParentNode(HTMLNode):
@@ -40,4 +39,4 @@ class ParentNode(HTMLNode):
             raise ValueError("Invalid children value")
 
         children = "".join(child.to_html() for child in self.children)
-        return f"<{self.tag}{self.props_to_html()}>{children}</{self.tag}>"
+        return f"<{self.tag} {self.props_to_html()}>{children}</{self.tag}>"

@@ -7,22 +7,29 @@ def split_nodes_delimiter(
     old_nodes: List[TextNode], delimiter: str, text_type: TextType
 ) -> List[TextNode]:
     new_nodes = []
+
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
             continue
 
-        if node.text.count(delimiter) % 2 != 0:
-            raise Exception(f"Unmatched delimiter: {delimiter}")
-
-        parts = node.text.split(delimiter)
-
-        for i, part in enumerate(parts):
-            if part:
-                if i % 2 == 0:
-                    new_nodes.append(TextNode(part, TextType.TEXT))
-                else:
-                    new_nodes.append(TextNode(part, text_type))
+        text = node.text
+        start = 0
+        while True:
+            open_idx = text.find(delimiter, start)
+            if open_idx == -1:
+                new_nodes.append(TextNode(text[start:], TextType.TEXT))
+                break
+            close_idx = text.find(delimiter, open_idx + len(delimiter))
+            if close_idx == -1:
+                new_nodes.append(TextNode(text[start:], TextType.TEXT))
+                break
+            if open_idx > start:
+                new_nodes.append(TextNode(text[start:open_idx], TextType.TEXT))
+            new_nodes.append(
+                TextNode(text[open_idx + len(delimiter) : close_idx], text_type)
+            )
+            start = close_idx + len(delimiter)
 
     return new_nodes
 
